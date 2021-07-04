@@ -29,5 +29,19 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
+	@Transactional
+	public void update(User user) {
+		// 수정시에는 영속성 컨텍스트에 User오브젝트를 영속화 시키고, 영속화된 User오브젝트를 수정
+		// 영속화된 오브젝트를 변경하면 자동으로 DB에 update
+		User persistance = userRepository.findById(user.getId())
+			.orElseThrow(()->{
+				return new IllegalArgumentException("회원이 없는데요?");
+		});
+		String rawPassword = user.getPassword();
+		String encPassword = encoder.encode(rawPassword);
+		persistance.setPassword(encPassword);
+		persistance.setEmail(user.getEmail());
+	}
+	
 }
 

@@ -35,8 +35,7 @@ public class BoardService {
 		board.setTitle(reqBoard.getTitle());
 		board.setContent(reqBoard.getContent());
 		// 해당함수 종료시 트랜잭션이 종료되고 더티체킹을 한다. 그다음 자동 업데이트가 flush
-		boardRepository.save(board);
-	}
+}
 	
 	@Transactional(readOnly = true)
 	public Page<Board> articles(Pageable pageable){
