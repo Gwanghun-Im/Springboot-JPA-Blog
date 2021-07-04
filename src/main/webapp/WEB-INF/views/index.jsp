@@ -5,7 +5,7 @@
 		<div class="card mt-2">
 			<div class="card-body">
 				<h5 class="card-title">${board.title}</h5>
-				<a class="btn btn-primary" href="#" role="button">Link</a>
+				<a class="btn btn-primary" href="/board/${board.id }" role="button">Link</a>
 			</div>
 		</div>
 	</c:forEach>
