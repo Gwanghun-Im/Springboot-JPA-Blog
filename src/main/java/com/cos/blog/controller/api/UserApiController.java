@@ -2,6 +2,10 @@ package com.cos.blog.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +20,9 @@ public class UserApiController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@PostMapping("/auth/join/Proc")
 	public ResponseDto<Integer> save(@RequestBody User user) {
@@ -29,6 +36,10 @@ public class UserApiController {
 		userService.update(user);
 		// db의 값은 변경 하지만, 섹션값은 변경이 되지 않는다. => 로그아웃을 해야 회원정보가 수정된다. 
 		// 직접 섹션값을 변경해야 한다. 
+		System.out.println(user);
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
 		return new ResponseDto<Integer> (HttpStatus.OK.value(),1);
 	}
 }

@@ -20,6 +20,7 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
+	
 	@Transactional
 	public void Signup(User user) {
 		String rawPassword = user.getPassword();
@@ -37,11 +38,20 @@ public class UserService {
 			.orElseThrow(()->{
 				return new IllegalArgumentException("회원이 없는데요?");
 		});
-		String rawPassword = user.getPassword();
-		String encPassword = encoder.encode(rawPassword);
-		persistance.setPassword(encPassword);
-		persistance.setEmail(user.getEmail());
+		if (persistance.getOauth() == null || persistance.getOauth().equals("")) {
+			String rawPassword = user.getPassword();
+			String encPassword = encoder.encode(rawPassword);
+			persistance.setPassword(encPassword);
+			persistance.setEmail(user.getEmail());
+		}
 	}
 	
+	@Transactional
+	public User find(String username) {
+		User user = userRepository.findByUsername(username).orElseGet(()->{
+			return new User();
+		});
+		return user;
+	}
 }
 

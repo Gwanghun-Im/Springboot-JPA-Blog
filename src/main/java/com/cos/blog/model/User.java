@@ -29,7 +29,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//프로젝트에서 연결된 DB(MySQL)의 넘버링 전략을 이어간다. 
 	private int id; //시퀀스, auto_increment
 	
-	@Column(nullable = false, length = 30,unique = true)
+	@Column(nullable = false, length = 100,unique = true)
 	private String username;
 	
 	@Column(nullable = false, length = 100) //password를 해쉬로 변경하기 위해 넉넉하게
@@ -41,6 +41,8 @@ public class User {
    //	@ColumnDefault("'user'")
 	@Enumerated(EnumType.STRING)
 	private RoleType role; //Enum을 써야한다.  admin, user, manager
+	
+	private String oauth;
 	
 	@CreationTimestamp //시간이 자동으로 변경됨
 	private Timestamp createDate;
