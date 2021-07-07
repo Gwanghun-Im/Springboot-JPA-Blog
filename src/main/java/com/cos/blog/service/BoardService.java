@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
 
 
 // 스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌. IoC를 해준다. => 자동으로 메모리에 띄어줌
@@ -18,6 +20,9 @@ public class BoardService {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private ReplyRepository replyRepository;
 	
 	@Transactional
 	public void post(Board board,User user) {
@@ -51,6 +56,17 @@ public class BoardService {
 	@Transactional
 	public void delete(int id) {
 		boardRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public void replyPost(Reply reply, int id, User user) {
+		reply.setUser(user);
+		Board board = boardRepository.findById(id)
+				.orElseThrow(()->{
+					return new IllegalArgumentException("실패");
+				});
+		reply.setBoard(board);
+		replyRepository.save(reply);
 	}
 }
 

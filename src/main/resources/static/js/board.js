@@ -9,6 +9,9 @@ let index = {
 		$("#btn-update").on("click", () => {
 			this.update();
 		});
+		$("#btn-reply-save").on("click", () => {
+			this.replySave();
+		});
 	},
 
 
@@ -55,6 +58,24 @@ let index = {
 		}).done((res) => {
 			alert("수정이 완료 되었습니다.")
 			location.href = "/"
+		}).fail((e) => {
+			alert(JSON.stringify(e))
+		});
+	},
+	replySave: function() {
+		let data = {
+			content: $("#reply-content").val(),
+			boardId:$("#boardId").val()
+		}
+		console.log(data.boardId)
+		$.ajax({
+			type: "POST",
+			url: `/api/board/${data.boardId}/reply`,
+			data: JSON.stringify(data), 
+			contentType: "application/json;charset=utf-8",
+		}).done((res) => {
+			alert("댓글작성이 완료 되었습니다.")
+			location.href = `/board/${data.boardId}`
 		}).fail((e) => {
 			alert(JSON.stringify(e))
 		});

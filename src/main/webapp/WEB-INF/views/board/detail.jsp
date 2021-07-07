@@ -20,6 +20,38 @@
 		<div>${board.content }</div>
 	</div>
 	<hr>
+	<div class="card">
+		<div class="card-header">댓글 리스트</div>
+		<ul id="reply--box" class="list-group">
+		<c:forEach var="reply" items="${board.reply }">
+				<li id="reply--1" class="list-group-item d-flex justify-content-between">
+					<div>${reply.content }</div>
+					<div class="d-flex">
+						<div>작성자: ${reply.user.username}&nbsp;</div>
+						<c:if test="${principal.user.id == reply.user.id }">
+							<button class="badge bg-danger">삭제</button>
+						</c:if>
+						
+					</div>
+				</li>
+			</c:forEach>
+			
+		</ul>
+	</div>
+	<br>
+	<div class="card">
+	<form>
+	<input type="hidden" id="boardId" value="${board.id }">
+	<div class="card-body">
+			<textarea class="form-control" placeholder="Leave a comment here" id="reply-content"></textarea>
+		</div>
+		<div class="card-footer">
+			<button type="button" class="btn btn-primary" id="btn-reply-save">등록</button>
+		</div>
+	</form>
+	</div>
+
+
 </div>
 
 <script src="/js/board.js"></script>
